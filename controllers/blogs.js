@@ -1,6 +1,5 @@
 const router = require("express").Router();
 
-const { nextTick } = require("node:process");
 const { Blog } = require("../models")
 
 router.get('/', async (req, res) => {
