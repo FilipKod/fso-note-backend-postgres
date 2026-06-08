@@ -5,6 +5,8 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({error: "mallformated id"})
   } else if (error.name === "SequelizeDatabaseError") {
     return response.status(400).send({error: "invalid database operation or data format"})
+  } else if (error.name === "SequelizeValidationError") {
+    return response.status(400).send({error: error.message})
   }
 
   return next(error)
