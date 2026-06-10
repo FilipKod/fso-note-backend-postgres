@@ -37,8 +37,12 @@ router.get('/', async (req, res) => {
       model: User,
       attributes: ["name", "username"]
     },
-    where
+    where,
+    order: [
+      ["likes", "DESC"]
+    ]
   })
+
   if (blogs) {
     res.json(blogs)
   } else {
