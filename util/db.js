@@ -1,8 +1,10 @@
 const { Sequelize } = require("sequelize")
 
-const { DB_URL } = require("./config")
+const { DB_URL, TESTING, TEST_DATABASE_URL } = require("./config")
 
-const sequelize = new Sequelize(DB_URL, {
+const urlToDb = TESTING ? TEST_DATABASE_URL : DB_URL
+console.log(urlToDb)
+const sequelize = new Sequelize(urlToDb, {
   dialect: 'postgres',
   ssl: false
 })
