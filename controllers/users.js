@@ -1,4 +1,5 @@
 const router = require("express").Router()
+const bcrypt = require("bcryptjs")
 const { User, Blog } = require("../models")
 
 router.get("/", async (req, res) => {
@@ -15,8 +16,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const user = await User.create({...req.body})
-    res.json(user)
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+    const user = await User.create({...req.body, hashedPassword})
+    const { hashedPassword: _, ...userWithoutPassword } = user.toJSON()
+    res.json(userWithoutPassword)
   } catch (error) {
     next(error)
   }

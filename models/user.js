@@ -20,6 +20,10 @@ User.init({
       }
     }
   },
+  hashedPassword: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -28,7 +32,17 @@ User.init({
   sequelize,
   underscored: true,
   timestamps: true,
-  modelName: 'user'
+  modelName: 'user',
+  defaultScope: {
+    attributes: {
+      exclude: ["hashed_password", "hashedPassword"]
+    }
+  },
+  scopes: {
+    withPassword: {
+      attributes: { include: ["hashedPassword"] }
+    }
+  }
 })
 
 module.exports = User

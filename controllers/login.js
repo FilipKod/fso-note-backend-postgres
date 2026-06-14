@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
 const router = require("express").Router()
 const { User } = require("../models")
 const { JWT_SERCET } = require("../util/config")
@@ -6,14 +7,14 @@ const { JWT_SERCET } = require("../util/config")
 router.post("/", async (req, res) => {
   const body = req.body
 
-  const user = await User.findOne({
+  const user = await User.scope("withPassword").findOne({
     where: {
       username: body.username
     }
   })
-
-  const passwordCorrect = body.password
-
+  
+  const passwordCorrect = user && await bcrypt.compare(body.password, user.hashedPassword)
+  
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
       error: "invalid username or password"
