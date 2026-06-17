@@ -4,6 +4,7 @@ const { Umzug, SequelizeStorage } = require("umzug")
 const path = require("path")
 
 const urlToDb = NODE_ENV === "test" ? TEST_DATABASE_URL : DB_URL
+console.log(urlToDb)
 
 const sequelize = new Sequelize(urlToDb, {
   dialect: 'postgres',
@@ -30,7 +31,7 @@ const connectToDatabase = async () => {
     }
     console.log("connected to database")
   } catch (error) {
-    console.log("failed to connect to the database")
+    console.log("failed to connect to the database", error)
     return process.exit(1)
   }
 
